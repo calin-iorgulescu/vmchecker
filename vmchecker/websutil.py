@@ -585,14 +585,14 @@ def getResultsHelper(courseId, assignmentId, currentUser, strout, username = Non
                     continue
                 f_path = os.path.join(r_path, fname)
                 if os.path.isfile(f_path):
-                    overflow_msg = ''
+                    overflow_msg = u""
                     f_size = os.path.getsize(f_path)
                     if f_size > MAX_VMR_FILE_SIZE:
                         overflow_msg = '\n\n' + _('File truncated! Actual size') + ': ' + str(f_size) + ' ' + _('bytes') + '\n'
                     # decode as utf-8 and ignore any errors, because
                     # characters will be badly encoded as json.
                     with codecs.open(f_path, 'r', encoding='utf-8', errors='ignore') as f:
-                        content = f.read(MAX_VMR_FILE_SIZE) + overflow_msg
+                        content = f.read(MAX_VMR_FILE_SIZE) + overflow_msg.decode("utf-8")
                         content = xssescape(content)
                         result_files.append({fname : content})
                         if fname == 'grade.vmr' and \
