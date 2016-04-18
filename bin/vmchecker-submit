@@ -42,7 +42,7 @@ def main():
     user = None
     with coursedb.opening_course_db(vmpaths.db_file()) as course_db:
         # First check if this is a team account
-        if course_db.get_team_id(account) is not None:
+        if course_db.get_team_id(account) is None:
             # This is a user's account, check if he is submitting for a team
             if not options.override_team:
                 (isTeamAccount, real_account) = course_db.get_assignment_account(assignment, account)
@@ -50,7 +50,7 @@ def main():
                     user = account
                     account = real_account
 
-    submit.submit(archive_filename, assignment, account, course_id, user = None,
+    submit.submit(archive_filename, assignment, account, course_id, user = user,
                   skip_toosoon_check = options.skip_time_check,
                   skip_hidden_check = options.skip_hidden_check,
                   forced_upload_time = options.forced_upload_time)
