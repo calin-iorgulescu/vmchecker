@@ -119,10 +119,13 @@ a.fillButton:hover {
 	border-top: 1px solid #CCCCCC;
 	overflow-y: auto;
 	overflow-x: hidden;
-	overflow-wrap: break-word;
-	word-wrap: break-word;
 	outline: 0;
-}		
+}
+
+.popupContentPanel pre {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
 
 .check_error {
 	color: red;

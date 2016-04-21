@@ -7,6 +7,12 @@
 			font-size: 14px;
 			background-color: #FFF;
 			padding: 30px 10px 10px 10px;
+			white-space: pre-wrap;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+		}
+		.container pre {
+			white-space: pre-wrap;
 			overflow-wrap: break-word;
 			word-wrap: break-word;
 		}
