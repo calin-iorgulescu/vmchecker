@@ -198,24 +198,36 @@ def unassign_team(course_db, team_name, assignment_name, assign_team_to_all, vmc
 
 def list(course_db, user_name, team_name, assignment_name):
 
-    if team_name is None and user_name is None and assignment_name is None:
-        print "Existing teams:"
-        for team in course_db.get_teams():
-            print "- Name: " + team[0] + ", mutual account = " + ("yes" if team[1] == 1 else "no")
-            assg_str = ''
-            for assignment in course_db.get_team_assignments(team[0]):
-                if assg_str != '':
-                    assg_str += ", "
-                assg_str += assignment[0]
-            print " - Active for assignments: " + assg_str
+    records = []
+    for team in course_db.get_teams():
+        record = {}
+        record['team'] = team[0]
+        record['mutual_account'] = team[1]
+        assg_str = ''
+        for assignment in course_db.get_team_assignments(team[0]):
+            if assg_str != '':
+                assg_str += ", "
+            assg_str += assignment[0]
+        record['assignments'] = assg_str
+        usr_str = ''
+        for user in course_db.get_team_members(course_db.get_team_id(team[0])):
+            if usr_str != '':
+                usr_str += ', '
+            usr_str += user[0]
+        record['users'] = usr_str
+        records.append(record)
 
-            usr_str = ''
-            for user in course_db.get_team_members(course_db.get_team_id(team[0])):
-                if usr_str != '':
-                    usr_str += ', '
-                usr_str += user[0]
-            print " - Team members: " + usr_str
+    if team_name is not None:
+        records = filter(lambda x : x['team'] == team_name, records)
+    if assignment_name is not None:
+        records = filter(lambda x : assignment_name in x['assignments'], records)
+    if user_name is not None:
+        records = filter(lambda x : user_name in x['users'], records)
 
+    for record in records:
+        print "- Name: " + record['team'] + ", mutual account = " + ("yes" if record['mutual_account'] else "no")
+        print " - Active for assignments: " + record['assignments']
+        print " - Team members: " + record['users']
 
 def main():
     """Checks for modified grades and updates the database"""
@@ -225,8 +237,6 @@ def main():
     cmdline = argparse.ArgumentParser(description = "Change the team relationships of the students.")
     prepare_argparse(cmdline)
     args = cmdline.parse_args()
-
-    print args
 
     vmcfg = StorerCourseConfig(CourseList().course_config(args.course_id))
     vmpaths = paths.VmcheckerPaths(vmcfg.root_path())
