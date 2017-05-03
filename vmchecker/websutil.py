@@ -732,7 +732,7 @@ def sanityCheckDotDot(param):
         raise InvalidDataException
     return param
 
-usernameRegexWhiteList = re.compile('^[a-zA-Z0-9-_.]+$')
+usernameRegexWhiteList = re.compile('^[a-zA-Z0-9-_.@]+$')
 def sanityCheckUsername(username):
     if usernameRegexWhiteList.match(username) is None:
         raise InvalidDataException
