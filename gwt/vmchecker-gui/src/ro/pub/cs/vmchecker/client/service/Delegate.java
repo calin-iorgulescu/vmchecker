@@ -62,7 +62,7 @@ public class Delegate<T> {
 	private Date parseDateFromResponse(Response response) {
 		Header[] headers = response.getHeaders();
 		for (Header header : headers) {
-			if (header.getName() == "Date") {
+			if (header.getName().equals("Date")) {
 				DateTimeFormat dtf = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.RFC_2822);
 				return dtf.parse(header.getValue());
 			}
